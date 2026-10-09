@@ -2113,7 +2113,8 @@ async function main() {
     return response.status(status).json({ error: status >= 500 ? "The server could not complete this request." : error.message });
   });
 
-  const host = process.env.NODE_ENV === "development" ? "127.0.0.1" : (process.env.HOST || "0.0.0.0");
+  const isRender = process.env.RENDER === "true" || Boolean(process.env.RENDER_SERVICE_ID);
+  const host = isRender ? "0.0.0.0" : (process.env.NODE_ENV === "development" ? "127.0.0.1" : (process.env.HOST || "0.0.0.0"));
   const server = app.listen(PORT, host, () => console.log(`Journova is available at http://localhost:${PORT}`));
   const shutdown = () => {
     server.close(() => {
